@@ -147,16 +147,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(typeCommand, 1000);
     }
 
-    // 7. Cursor Parallax Interaction (Only for fine pointers like mice)
+    // 7. Cursor Parallax Interaction — Hero only (Only for fine pointers like mice)
     if (window.matchMedia("(pointer: fine)").matches) {
-        const parallaxElements = document.querySelectorAll('.parallax-element');
+        const heroSection = document.getElementById('home');
+        // Only select parallax elements inside the hero section
+        const parallaxElements = heroSection
+            ? heroSection.querySelectorAll('.parallax-element')
+            : [];
         
         document.addEventListener('mousemove', (e) => {
             const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
             const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
             
             parallaxElements.forEach(el => {
-                // We keep existing transforms (like hover scale) intact as much as possible by using a wrapper approach or subtle translate
                 el.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
             });
         });
