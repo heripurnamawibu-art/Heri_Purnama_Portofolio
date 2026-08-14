@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heri Purnama | Student Developer</title>
-    <meta name="description"
-        content="Portfolio of Heri Purnama, a Student Developer interested in Game Development, Programming, and Creative Projects.">
+    <title>Heri Purnama | Developer Archive</title>
+    <meta name="description" content="Personal Developer Archive of Heri Purnama, documenting game development, programming, and creative projects.">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Using Inter for UI and JetBrains Mono for code aesthetics -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <div class="noise-overlay"></div>
+    <div class="scanline"></div>
+
+    <!-- Easter Egg Terminal Overlay -->
+    <div id="easter-egg-overlay" class="overlay-hidden">
+        <div class="easter-egg-terminal">
+            <div class="window-header">
+                <span class="dot red" id="close-easter-egg"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="terminal-body" id="easter-egg-content"></div>
+        </div>
+    </div>
 
     <header id="header">
         <nav class="navbar">
-            <a href="#home" class="logo">HP<span>.</span></a>
+            <a href="#home" class="logo">HP<span>/</span>ARCHIVE</a>
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
-                <li><a href="#journey">Journey</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#archive">Archive</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -42,27 +48,44 @@
         <!-- HERO SECTION -->
         <section id="home" class="hero reveal">
             <div class="hero-content">
-                <p class="greeting">Hi, I'm Heri Purnama.</p>
-                <h1 class="title">Student Developer</h1>
-                <h2 class="subtitle">Game Development &bull; Programming &bull; Creative Projects</h2>
+                <p class="greeting">System initialized.</p>
+                <h1 class="title">Personal<br>Developer<br>Archive</h1>
+                <h2 class="subtitle">Documenting the journey of Game Development, Programming, & Creative Engineering.</h2>
+                
+                <div class="mini-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">06+</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">07</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">08+</span>
+                        <span class="stat-label">Tools</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">2026</span>
+                        <span class="stat-label">Active</span>
+                    </div>
+                </div>
+
                 <div class="cta-group">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="#about" class="btn btn-secondary">About Me</a>
+                    <a href="#projects" class="btn btn-primary">Initialize Sequence →</a>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="code-window">
+            <div class="hero-visual parallax-element">
+                <div class="code-window terminal-window">
                     <div class="window-header">
                         <span class="dot red"></span>
                         <span class="dot yellow"></span>
                         <span class="dot green"></span>
+                        <span class="terminal-title">bash - heri@portfolio:~</span>
                     </div>
-                    <pre><code><span class="keyword">const</span> <span class="variable">developer</span> <span class="operator">=</span> {
-    <span class="property">name</span>: <span class="string">'Heri Purnama'</span>,
-    <span class="property">status</span>: <span class="string">'Vocational High School Student'</span>,
-    <span class="property">interests</span>: [<span class="string">'Games'</span>, <span class="string">'Code'</span>, <span class="string">'Art'</span>],
-    <span class="function">isLearning</span>: () <span class="operator">=></span> <span class="boolean">true</span>
-};</code></pre>
+                    <div class="terminal-body">
+                        <div id="typewriter-output"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -70,26 +93,56 @@
         <!-- ABOUT SECTION -->
         <section id="about" class="about reveal">
             <div class="section-header">
-                <h2><span class="bracket">{</span> About Me <span class="bracket">}</span></h2>
+                <h2><span class="bracket">[</span> 01_ABOUT_ME <span class="bracket">]</span></h2>
                 <div class="line"></div>
             </div>
             <div class="about-content">
                 <div class="about-text">
-                    <p>I am a vocational high school student with a deep passion for programming, game development, and
-                        the creative intersection of technology and art.</p>
-                    <p>My journey started out of curiosity—I wanted to know how games were made. Since then, I've been
-                        actively learning by building my own projects, experimenting with different languages like
-                        Python, C++, and GDScript, and diving into various digital tools.</p>
-                    <p>When I'm not coding or exploring engines like Godot and Roblox Studio, you can find me
-                        experimenting with pixel art, game music production, or catching up on anime. I'm always looking
-                        for the next exciting technology to learn.</p>
+                    <p>I am a student developer focused on game development and the creative intersection of technology and art.</p>
+                    <p>My journey started out of curiosity to understand how games were made. Since then, I've actively built projects, experimented with logic, and explored digital environments using Python, C++, and GDScript.</p>
+                    <p>When I'm not in Godot or VS Code, I'm exploring pixel art, game music production, or analyzing new technical concepts. This archive serves as a living record of my digital experiments.</p>
                 </div>
-                <div class="about-image">
+                <div class="about-image parallax-element">
                     <div class="image-wrapper">
-                        <!-- Placeholder for a real photo later -->
                         <img src="assets/images/profile-placeholder.svg" alt="Heri Purnama">
                         <div class="glow-effect"></div>
+                        <div class="frame-corners"></div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CURRENTLY LEARNING SECTION -->
+        <section id="learning" class="learning reveal">
+            <div class="section-header">
+                <h2><span class="bracket">[</span> 02_CURRENTLY_LEARNING <span class="bracket">]</span></h2>
+                <div class="line"></div>
+            </div>
+            <div class="learning-grid">
+                <div class="learn-card">
+                    <span class="learn-icon">✦</span>
+                    <h3>Godot Engine</h3>
+                    <p>Advanced 2D/3D systems</p>
+                </div>
+                <div class="learn-card">
+                    <span class="learn-icon">✦</span>
+                    <h3>JavaScript</h3>
+                    <p>Web interactivity</p>
+                </div>
+                <div class="learn-card">
+                    <span class="learn-icon">✦</span>
+                    <h3>Blender</h3>
+                    <p>3D modeling</p>
+                </div>
+                <div class="learn-card">
+                    <span class="learn-icon">✦</span>
+                    <h3>Game Design</h3>
+                    <p>Mechanics & flow</p>
+                </div>
+                <div class="learn-card">
+                    <span class="learn-icon">✦</span>
+                    <h3>3D Development</h3>
+                    <p>Spatial engineering</p>
                 </div>
             </div>
         </section>
@@ -97,101 +150,46 @@
         <!-- SKILLS SECTION -->
         <section id="skills" class="skills reveal">
             <div class="section-header">
-                <h2><span class="bracket">{</span> Skills & Tools <span class="bracket">}</span></h2>
+                <h2><span class="bracket">[</span> 03_TECHNICAL_STACK <span class="bracket">]</span></h2>
                 <div class="line"></div>
             </div>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Programming</h3>
-                    <div class="skill-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">C++</span>
-                        <span class="tag">Java</span>
-                        <span class="tag">GDScript</span>
-                    </div>
+            <div class="skills-interactive-grid">
+                <!-- Programming -->
+                <div class="skill-interactive-card">
+                    <div class="skill-front">PYTHON</div>
+                    <div class="skill-back">Core logic, scripting, and Ren'Py visual novels.</div>
                 </div>
-                <div class="skill-category">
-                    <h3>Web</h3>
-                    <div class="skill-tags">
-                        <span class="tag">HTML</span>
-                        <span class="tag">CSS</span>
-                        <span class="tag">JavaScript</span>
-                    </div>
+                <div class="skill-interactive-card">
+                    <div class="skill-front">C++</div>
+                    <div class="skill-back">Systems programming and low-level engine concepts.</div>
                 </div>
-                <div class="skill-category">
-                    <h3>Game Dev</h3>
-                    <div class="skill-tags">
-                        <span class="tag">Godot</span>
-                        <span class="tag">Roblox Studio</span>
-                        <span class="tag">Greenfoot</span>
-                        <span class="tag">Ren'Py</span>
-                    </div>
+                <div class="skill-interactive-card">
+                    <div class="skill-front">JAVA</div>
+                    <div class="skill-back">Object-oriented foundations and Greenfoot projects.</div>
                 </div>
-                <div class="skill-category">
-                    <h3>Creative & Other</h3>
-                    <div class="skill-tags">
-                        <span class="tag">Pixel Art</span>
-                        <span class="tag">Digital Design</span>
-                        <span class="tag">Game Design</span>
-                        <span class="tag">Music Production</span>
-                        <span class="tag">Git / GitHub</span>
-                    </div>
+                <div class="skill-interactive-card">
+                    <div class="skill-front">GDSCRIPT</div>
+                    <div class="skill-back">Native logic implementation for Godot game projects.</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- JOURNEY SECTION -->
-        <section id="journey" class="journey reveal">
-            <div class="section-header">
-                <h2><span class="bracket">{</span> My Journey <span class="bracket">}</span></h2>
-                <div class="line"></div>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Started Learning Programming</h3>
-                        <p>Discovered the world of code. Learned logic, basic syntax, and how to write my first scripts.
-                        </p>
-                    </div>
+                
+                <!-- Web -->
+                <div class="skill-interactive-card">
+                    <div class="skill-front">HTML / CSS</div>
+                    <div class="skill-back">Structuring digital archives and developer interfaces.</div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Exploring Game Development</h3>
-                        <p>Began experimenting with game engines to bring interactive ideas to life.</p>
-                    </div>
+                <div class="skill-interactive-card">
+                    <div class="skill-front">JAVASCRIPT</div>
+                    <div class="skill-back">Adding DOM interactions and system logic to the web.</div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Building Personal Projects</h3>
-                        <p>Transitioned from tutorials to creating my own standalone games and digital experiences.</p>
-                    </div>
+                
+                <!-- Game Dev -->
+                <div class="skill-interactive-card">
+                    <div class="skill-front">ROBLOX STUDIO</div>
+                    <div class="skill-back">Lua-based game mechanics and multiplayer exploration.</div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Learning Web Development</h3>
-                        <p>Started exploring HTML, CSS, and JavaScript to build web applications and digital portfolios.
-                        </p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Experimenting With Creative Tools</h3>
-                        <p>Diving into FL Studio for music, pixel art tools, and Blender to expand my creative toolkit.
-                        </p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Building My Portfolio</h3>
-                        <p>Compiled my journey and projects into this personal workspace to document my ongoing growth.
-                        </p>
-                    </div>
+                <div class="skill-interactive-card">
+                    <div class="skill-front">REN'PY</div>
+                    <div class="skill-back">Interactive storytelling and dialogue branch systems.</div>
                 </div>
             </div>
         </section>
@@ -199,161 +197,194 @@
         <!-- PROJECTS SECTION -->
         <section id="projects" class="projects reveal">
             <div class="section-header">
-                <h2><span class="bracket">{</span> Projects <span class="bracket">}</span></h2>
+                <h2><span class="bracket">[</span> 04_PROJECT_ARCHIVE <span class="bracket">]</span></h2>
                 <div class="line"></div>
             </div>
-
+            
             <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="game">Games</button>
-                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn active" data-filter="all">ALL</button>
+                <button class="filter-btn" data-filter="game">GAME_DEV</button>
+                <button class="filter-btn" data-filter="web">WEB_DEV</button>
             </div>
 
             <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="project-card" data-category="game">
-                    <div class="project-image">
+                
+                <!-- Project 01 -->
+                <div class="project-card parallax-element" data-category="game">
+                    <div class="project-num">01</div>
+                    <div class="project-category">GAME DEVELOPMENT</div>
+                    <h3>Harvest Havoc Farm</h3>
+                    <p>Tabletop card game concept featuring farming mechanics, crop and skill cards, weather events, sabotage, and a coin economy system.</p>
+                    
+                    <div class="project-preview">
                         <img src="assets/projects/harvest-havoc.svg" alt="Harvest Havoc Farm">
                     </div>
-                    <div class="project-info">
-                        <h3>Harvest Havoc Farm</h3>
-                        <p>A tabletop card game concept featuring farming mechanics, crop and skill cards, weather
-                            events, sabotage, and a coin economy system.</p>
-                        <div class="project-tech">
-                            <span>Game Design</span>
-                            <span>Tabletop</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">Game Design / Tabletop</div>
+                        <a href="#" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="project-card" data-category="game">
-                    <div class="project-image">
-                        <img src="assets/projects/godot-2d.svg" alt="Godot 2D Game">
+                <!-- Project 02 -->
+                <div class="project-card parallax-element" data-category="game">
+                    <div class="project-num">02</div>
+                    <div class="project-category">GAME DEVELOPMENT</div>
+                    <h3>Garou Slide Game</h3>
+                    <p>A WebGL-based sliding puzzle game built in Godot Engine. Playable directly in the browser with interactive web integration.</p>
+                    
+                    <div class="project-preview">
+                        <a href="https://pplg-cyber-media.github.io/garou-slide/" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/projects/garou-slide.svg" alt="Garou Slide Game">
+                        </a>
                     </div>
-                    <div class="project-info">
-                        <h3>Godot 2D Game</h3>
-                        <p>A 2D platformer/action game utilizing Godot Engine. Features character movement, gravity,
-                            collision detection, camera tracking, and a game over system.</p>
-                        <div class="project-tech">
-                            <span>Godot</span>
-                            <span>GDScript</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">Godot / GDScript / WebGL</div>
+                        <a href="https://pplg-cyber-media.github.io/garou-slide/" target="_blank" rel="noopener noreferrer" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Project 3 -->
-                <div class="project-card" data-category="game">
-                    <div class="project-image">
+                <!-- Project 03 -->
+                <div class="project-card parallax-element" data-category="game">
+                    <div class="project-num">03</div>
+                    <div class="project-category">GAME DEVELOPMENT</div>
+                    <h3>Greenfoot Library Game</h3>
+                    <p>A Java-based game built in Greenfoot. Involves a library environment where the player acts as a librarian managing NPC students.</p>
+                    
+                    <div class="project-preview">
                         <img src="assets/projects/greenfoot-lib.svg" alt="Greenfoot Library Game">
                     </div>
-                    <div class="project-info">
-                        <h3>Greenfoot Library Game</h3>
-                        <p>A Java-based game built in Greenfoot. Involves a library environment where the player acts as
-                            a librarian managing NPC students, with spawning and collision mechanics.</p>
-                        <div class="project-tech">
-                            <span>Java</span>
-                            <span>Greenfoot</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">Java / Greenfoot</div>
+                        <a href="#" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Project 4 -->
-                <div class="project-card" data-category="game">
-                    <div class="project-image">
+                <!-- Project 04 -->
+                <div class="project-card parallax-element" data-category="game">
+                    <div class="project-num">04</div>
+                    <div class="project-category">GAME DEVELOPMENT</div>
+                    <h3>Ren'Py Visual Novel</h3>
+                    <p>An interactive storytelling experience created with Ren'Py. Includes character sprites, dialogue system, scene transitions, and branching story.</p>
+                    
+                    <div class="project-preview">
                         <img src="assets/projects/renpy-vn.svg" alt="Ren'Py Visual Novel">
                     </div>
-                    <div class="project-info">
-                        <h3>Ren'Py Visual Novel</h3>
-                        <p>An interactive storytelling experience created with Ren'Py. Includes character sprites, a
-                            dialogue system, scene transitions, and branching story choices.</p>
-                        <div class="project-tech">
-                            <span>Ren'Py</span>
-                            <span>Python</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">Ren'Py / Python</div>
+                        <a href="#" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Project 5 -->
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
+                <!-- Project 05 -->
+                <div class="project-card parallax-element" data-category="web">
+                    <div class="project-num">05</div>
+                    <div class="project-category">WEB DEVELOPMENT</div>
+                    <h3>Personal Portfolio</h3>
+                    <p>A custom-built, responsive website designed to showcase my programming journey, creative projects, and technical skills as a developer archive.</p>
+                    
+                    <div class="project-preview">
                         <img src="assets/projects/portfolio.svg" alt="Personal Portfolio">
                     </div>
-                    <div class="project-info">
-                        <h3>Personal Portfolio</h3>
-                        <p>A custom-built, responsive website designed to showcase my programming journey, creative
-                            projects, and technical skills.</p>
-                        <div class="project-tech">
-                            <span>HTML</span>
-                            <span>CSS</span>
-                            <span>JavaScript</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">HTML / CSS / JS</div>
+                        <a href="#" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
 
-                <!-- Project 6 -->
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <a href="https://heripurnamawibu-art.github.io/Project_Cymnatic/" target="_blank"
-                            rel="noopener noreferrer">
+                <!-- Project 06 -->
+                <div class="project-card parallax-element" data-category="web">
+                    <div class="project-num">06</div>
+                    <div class="project-category">WEB DEVELOPMENT</div>
+                    <h3>Project Cymnatic</h3>
+                    <p>Crimson Tavern &mdash; A Premium Cyber Marketplace featuring a modern, dark-themed UI built with Tailwind CSS.</p>
+                    
+                    <div class="project-preview">
+                        <a href="https://heripurnamawibu-art.github.io/Project_Cymnatic/" target="_blank" rel="noopener noreferrer">
                             <img src="assets/projects/cymnatic.png" alt="Project Cymnatic">
                         </a>
                     </div>
-                    <div class="project-info">
-                        <h3>
-                            <a href="https://heripurnamawibu-art.github.io/Project_Cymnatic/" target="_blank"
-                                rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Project
-                                Cymnatic</a>
-                        </h3>
-                        <p>Crimson Tavern &mdash; A Premium Cyber Marketplace featuring a modern, dark-themed UI built
-                            with Tailwind CSS.</p>
-                        <div class="project-tech">
-                            <span>HTML</span>
-                            <span>Tailwind CSS</span>
-                        </div>
+                    
+                    <div class="project-footer">
+                        <div class="project-tech-minimal">HTML / Tailwind CSS</div>
+                        <a href="https://heripurnamawibu-art.github.io/Project_Cymnatic/" target="_blank" rel="noopener noreferrer" class="project-link">View Project &rarr;</a>
                     </div>
                 </div>
+
+            </div>
+        </section>
+
+        <!-- DIGITAL ARCHIVE INDEX -->
+        <section id="archive" class="archive-index reveal">
+            <div class="section-header">
+                <h2><span class="bracket">[</span> 05_DIGITAL_INDEX <span class="bracket">]</span></h2>
+                <div class="line"></div>
+            </div>
+            
+            <div class="archive-list">
+                <div class="archive-header">
+                    <span class="a-year">YEAR</span>
+                    <span class="a-cat">CATEGORY</span>
+                    <span class="a-name">PROJECT IDENTIFIER</span>
+                </div>
+                
+                <a href="#" class="archive-row">
+                    <span class="a-year">2026</span>
+                    <span class="a-cat">WEB DEV</span>
+                    <span class="a-name">Project Cymnatic</span>
+                </a>
+                <a href="#" class="archive-row">
+                    <span class="a-year">2026</span>
+                    <span class="a-cat">WEB DEV</span>
+                    <span class="a-name">Personal Portfolio</span>
+                </a>
+                <a href="#" class="archive-row">
+                    <span class="a-year">2025</span>
+                    <span class="a-cat">GAME DEV</span>
+                    <span class="a-name">Ren'Py Visual Novel</span>
+                </a>
+                <a href="#" class="archive-row">
+                    <span class="a-year">2025</span>
+                    <span class="a-cat">GAME DEV</span>
+                    <span class="a-name">Greenfoot Library Game</span>
+                </a>
+                <a href="https://pplg-cyber-media.github.io/garou-slide/" target="_blank" rel="noopener noreferrer" class="archive-row">
+                    <span class="a-year">2024</span>
+                    <span class="a-cat">GAME DEV</span>
+                    <span class="a-name">Garou Slide Game</span>
+                </a>
+                <a href="#" class="archive-row">
+                    <span class="a-year">2024</span>
+                    <span class="a-cat">TABLETOP</span>
+                    <span class="a-name">Harvest Havoc Farm</span>
+                </a>
             </div>
         </section>
 
         <!-- CONTACT SECTION -->
         <section id="contact" class="contact reveal">
             <div class="section-header">
-                <h2><span class="bracket">{</span> Contact <span class="bracket">}</span></h2>
+                <h2><span class="bracket">[</span> 06_SYSTEM_CONTACT <span class="bracket">]</span></h2>
                 <div class="line"></div>
             </div>
             <div class="contact-content">
-                <p>Feel free to reach out if you want to talk about games, coding, or potential collaborations.</p>
+                <p>Connection established. Open to discussing game mechanics, logic algorithms, and digital experiments.</p>
                 <div class="social-links">
-                    <!-- Replace the # with actual links when ready -->
-                    <a href="https://github.com/heripurnamawibu-art" class="social-btn" target="_blank"
-                        rel="noopener noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                            </path>
-                        </svg>
-                        GitHub
+                    <a href="#" class="social-btn" target="_blank" rel="noopener noreferrer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        SYS_GITHUB
                     </a>
-                    <a href="https://www.instagram.com/heri.purnama.451/" class="social-btn" target="_blank"
-                        rel="noopener noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                        </svg>
-                        Instagram
+                    <a href="#" class="social-btn" target="_blank" rel="noopener noreferrer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        SYS_INSTAGRAM
                     </a>
-                    <a href="mailto:heripurnamawibu@email.com" class="social-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                            </path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        Email
+                    <a href="mailto:placeholder@email.com" class="social-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        SYS_EMAIL
                     </a>
                 </div>
             </div>
@@ -362,18 +393,14 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2026 Heri Purnama</p>
-            <p class="small-text">Built with HTML, CSS &amp; JavaScript.</p>
+            <p>&copy; 2026 Heri Purnama. All rights reserved.</p>
+            <p class="small-text">Archive System v1.0. Built with HTML, CSS &amp; JavaScript.</p>
         </div>
         <button id="back-to-top" aria-label="Back to top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15"></polyline>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
         </button>
     </footer>
 
     <script src="script.js"></script>
 </body>
-
 </html>
