@@ -462,7 +462,9 @@ header {
 }
 
 .learn-card {
-    background-color: var(--bg-secondary);
+    background-color: rgba(10, 10, 16, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: var(--border-subtle);
     padding: 25px;
     transition: var(--transition);
@@ -473,7 +475,7 @@ header {
 .learn-card:hover {
     border: var(--border-hover);
     transform: translateY(-5px);
-    background-color: var(--bg-card);
+    background-color: rgba(15, 20, 35, 0.82);
 }
 
 .learn-icon {
@@ -520,7 +522,9 @@ header {
     align-items: center;
     justify-content: center;
     border: var(--border-subtle);
-    background-color: var(--bg-secondary);
+    background-color: rgba(10, 10, 16, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 20px;
 }
 
@@ -533,11 +537,13 @@ header {
 
 .skill-back {
     transform: rotateY(180deg);
-    background-color: var(--bg-card);
+    background-color: rgba(12, 20, 36, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     font-size: 0.85rem;
     text-align: center;
     color: var(--text-secondary);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(59, 130, 246, 0.2);
 }
 
 .skill-interactive-card:hover .skill-front {
@@ -710,7 +716,7 @@ header {
 }
 
 .archive-row:hover {
-    background-color: rgba(255,255,255,0.02);
+    background-color: rgba(30, 58, 138, 0.12);
     padding-left: 10px;
 }
 
