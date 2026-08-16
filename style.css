@@ -47,10 +47,25 @@ html {
 
 body {
     font-family: var(--font-ui);
-    background-color: var(--bg-main);
+    background-color: transparent;
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+}
+
+/* =========================================
+   3D Developer Space Canvas Background
+   ========================================= */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+    display: block;
+    outline: none;
 }
 
 a {
@@ -575,7 +590,9 @@ header {
 }
 
 .project-card {
-    background-color: transparent;
+    background-color: rgba(10, 10, 14, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: var(--border-subtle);
     padding: 30px;
     display: flex;
@@ -587,7 +604,7 @@ header {
 .project-card:hover {
     border: var(--border-hover);
     transform: translateY(-5px);
-    background-color: rgba(255,255,255,0.02);
+    background-color: rgba(15, 20, 30, 0.85);
 }
 
 .project-num {
@@ -756,7 +773,9 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-main);
+    background-color: rgba(6, 6, 6, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .footer-content p {
