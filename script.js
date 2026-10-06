@@ -1,16 +1,203 @@
 document.addEventListener('DOMContentLoaded', () => {
+    'use strict';
 
-    // 1. Mobile Navigation Toggle
+    const mainTrack = document.getElementById('main-track');
+    if (!mainTrack) return;
+
+    const navItems = document.querySelectorAll('.nav-links a');
+    const progressBar = document.getElementById('scroll-progress-bar');
+
+    // -------------------------------------------------------------------------
+    // 1. INFINITE CONTINUOUS LOOP ENGINE (Multi-Set Clones & Seamless Wrapping)
+    // -------------------------------------------------------------------------
+    const originalSections = Array.from(mainTrack.children);
+    const originalCount = originalSections.length;
+
+    // Helper to clone a section while sanitizing IDs
+    function createSectionClone(item, cloneType) {
+        const clone = item.cloneNode(true);
+        const secId = item.getAttribute('id');
+        if (secId) {
+            clone.setAttribute('data-section-id', secId);
+            clone.removeAttribute('id');
+        }
+        clone.querySelectorAll('[id]').forEach(el => {
+            el.setAttribute('data-clone-id', el.id);
+            el.removeAttribute('id');
+        });
+        clone.classList.add(`track-clone-${cloneType}`);
+        return clone;
+    }
+
+    // Right Clone Set 1 & Right Clone Set 2 (for forward endless loop)
+    originalSections.forEach(sec => mainTrack.appendChild(createSectionClone(sec, 'right-1')));
+    originalSections.forEach(sec => mainTrack.appendChild(createSectionClone(sec, 'right-2')));
+
+    // Left Clone Set (for backward endless loop)
+    originalSections.slice().reverse().forEach(sec => {
+        mainTrack.insertBefore(createSectionClone(sec, 'left'), mainTrack.firstChild);
+    });
+
+    let centerStartOffset = 0;
+    let singleLoopWidth = 0;
+
+    function calculateLoopDimensions() {
+        const firstOriginal = originalSections[0];
+        const lastOriginal = originalSections[originalCount - 1];
+
+        if (firstOriginal && lastOriginal) {
+            centerStartOffset = firstOriginal.offsetLeft;
+            singleLoopWidth = (lastOriginal.offsetLeft + lastOriginal.offsetWidth) - firstOriginal.offsetLeft;
+        }
+    }
+
+    // Calculate layout dimensions
+    calculateLoopDimensions();
+    mainTrack.scrollLeft = centerStartOffset;
+
+    window.addEventListener('resize', () => {
+        calculateLoopDimensions();
+    });
+
+    // Seamless Continuous Loop Jumps
+    let isLooping = false;
+    function handleLoopJump() {
+        if (isLooping || singleLoopWidth <= 0) return;
+
+        const currentX = mainTrack.scrollLeft;
+        const forwardThreshold = centerStartOffset + singleLoopWidth;
+        const backwardThreshold = centerStartOffset;
+
+        if (currentX >= forwardThreshold) {
+            isLooping = true;
+            mainTrack.scrollLeft = currentX - singleLoopWidth;
+            isLooping = false;
+        } else if (currentX < backwardThreshold - 10) {
+            isLooping = true;
+            mainTrack.scrollLeft = currentX + singleLoopWidth;
+            isLooping = false;
+        }
+    }
+
+    mainTrack.addEventListener('scroll', handleLoopJump, { passive: true });
+
+    // -------------------------------------------------------------------------
+    // 2. UNCONDITIONAL MOUSE WHEEL HORIZONTAL SCROLLING
+    // -------------------------------------------------------------------------
+    window.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+        mainTrack.scrollLeft += delta * 1.25;
+    }, { passive: false });
+
+    // -------------------------------------------------------------------------
+    // 3. MOUSE DRAG / PANNING
+    // -------------------------------------------------------------------------
+    let isDown = false;
+    let dragStartX = 0;
+    let dragScrollStart = 0;
+
+    mainTrack.addEventListener('mousedown', (e) => {
+        if (e.target.closest('a, button, input, textarea, .filter-btn')) return;
+        isDown = true;
+        mainTrack.classList.add('grabbing');
+        dragStartX = e.pageX - mainTrack.offsetLeft;
+        dragScrollStart = mainTrack.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDown = false;
+        mainTrack.classList.remove('grabbing');
+    });
+
+    mainTrack.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - mainTrack.offsetLeft;
+        const walk = (x - dragStartX) * 1.6;
+        mainTrack.scrollLeft = dragScrollStart - walk;
+    });
+
+    // -------------------------------------------------------------------------
+    // 4. NAVBAR ACTIVE STATE & PROGRESS BAR
+    // -------------------------------------------------------------------------
+    function updateNavProgress() {
+        if (singleLoopWidth <= 0) calculateLoopDimensions();
+
+        const scrollX = mainTrack.scrollLeft;
+        const relativeX = (scrollX - centerStartOffset + singleLoopWidth * 10) % singleLoopWidth;
+        const progress = Math.min(Math.max(relativeX / singleLoopWidth, 0), 1);
+
+        if (progressBar) {
+            progressBar.style.width = `${progress * 100}%`;
+        }
+
+        // Find active section in the original loop
+        let currentId = 'home';
+        originalSections.forEach((item) => {
+            const itemRelative = item.offsetLeft - centerStartOffset;
+            if (relativeX >= itemRelative - window.innerWidth * 0.35) {
+                const idAttr = item.getAttribute('id');
+                if (idAttr) currentId = idAttr;
+            }
+        });
+
+        // Update nav links active class
+        navItems.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('href') === `#${currentId}`) {
+                a.classList.add('active');
+            }
+        });
+    }
+
+    mainTrack.addEventListener('scroll', updateNavProgress, { passive: true });
+    updateNavProgress();
+
+    // -------------------------------------------------------------------------
+    // 5. NAV LINKS CLICK (Scroll to Nearest Section Instance)
+    // -------------------------------------------------------------------------
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const href = item.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                
+                // Find all matching instances across original and clones
+                const instances = Array.from(
+                    mainTrack.querySelectorAll(`section#${targetId}, section[data-section-id="${targetId}"]`)
+                );
+                if (instances.length === 0) return;
+
+                const currentX = mainTrack.scrollLeft;
+                let closestEl = instances[0];
+                let minDiff = Math.abs(instances[0].offsetLeft - currentX);
+
+                instances.forEach(el => {
+                    const diff = Math.abs(el.offsetLeft - currentX);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestEl = el;
+                    }
+                });
+
+                mainTrack.scrollTo({
+                    left: closestEl.offsetLeft,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Mobile Hamburger
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
-    const navItems = document.querySelectorAll('.nav-links a');
-
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
         });
-
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -19,89 +206,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Active Navigation Indicator
-    const sections = document.querySelectorAll('section');
-    window.addEventListener('scroll', () => {
-        let current = '';
-        const scrollY = window.pageYOffset;
+    // -------------------------------------------------------------------------
+    // 6. KEYBOARD ARROW CONTROLS
+    // -------------------------------------------------------------------------
+    window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            // Adjust offset to trigger slightly before reaching the top
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navItems.forEach(a => {
-            a.classList.remove('active');
-            if (a.getAttribute('href').includes(current) && current !== '') {
-                a.classList.add('active');
-            }
-        });
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+            e.preventDefault();
+            mainTrack.scrollBy({ left: window.innerWidth * 0.75, behavior: 'smooth' });
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            mainTrack.scrollBy({ left: -window.innerWidth * 0.75, behavior: 'smooth' });
+        }
     });
 
-    // 3. Reveal Animation on Scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 100;
+    // -------------------------------------------------------------------------
+    // 7. PROJECT FILTERING (Event Delegation)
+    // -------------------------------------------------------------------------
+    mainTrack.addEventListener('click', (e) => {
+        const filterBtn = e.target.closest('.filter-btn');
+        if (!filterBtn) return;
 
-        reveals.forEach(reveal => {
-            const elementTop = reveal.getBoundingClientRect().top;
-            if (elementTop < windowHeight - elementVisible) {
-                reveal.classList.add('active');
+        const filterValue = filterBtn.getAttribute('data-filter');
+
+        // Update all filter button tabs
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-filter') === filterValue);
+        });
+
+        // Filter all project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            const category = card.getAttribute('data-category');
+            if (filterValue === 'all' || filterValue === category) {
+                card.style.display = 'flex';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(15px)';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                }, 200);
             }
         });
-    };
-    revealOnScroll(); // Trigger once on load
-    window.addEventListener('scroll', revealOnScroll);
 
-    // 4. Project Filtering
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            projectCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                
-                if (filterValue === 'all' || filterValue === category) {
-                    card.style.display = 'flex';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 50);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
-                }
-            });
-        });
+        setTimeout(calculateLoopDimensions, 250);
     });
 
-    // 5. Back to Top Button
-    const backToTopBtn = document.getElementById('back-to-top');
-    if (backToTopBtn) {
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-
-    // 6. Terminal Typing Animation (Hero)
-    const typeWriterOutput = document.getElementById('typewriter-output');
-    if (typeWriterOutput) {
+    // -------------------------------------------------------------------------
+    // 8. TERMINAL TYPING ANIMATION (Hero)
+    // -------------------------------------------------------------------------
+    const typeWriterOutputs = document.querySelectorAll('#typewriter-output, [data-clone-id="typewriter-output"]');
+    typeWriterOutputs.forEach(output => {
         const command = "whoami";
         const outputLines = [
             "Heri Purnama",
@@ -109,15 +266,13 @@ document.addEventListener('DOMContentLoaded', () => {
             "Game Development",
             "Creative Programming"
         ];
-        
+
         let i = 0;
-        let isTyping = true;
-        
-        // Initial prompt setup
-        typeWriterOutput.innerHTML = `<span class="cmd-prompt">heri@portfolio</span>:<span class="cmd-path">~</span>$ <span id="cmd-text"></span><span class="terminal-cursor"></span>`;
-        const cmdText = document.getElementById('cmd-text');
+        output.innerHTML = `<span class="cmd-prompt">heri@portfolio</span>:<span class="cmd-path">~</span>$ <span class="cmd-text"></span><span class="terminal-cursor"></span>`;
+        const cmdText = output.querySelector('.cmd-text');
 
         function typeCommand() {
+            if (!cmdText) return;
             if (i < command.length) {
                 cmdText.innerHTML += command.charAt(i);
                 i++;
@@ -128,67 +283,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function showOutput() {
-            // Remove cursor from command line
-            const cursor = document.querySelector('.terminal-cursor');
-            if(cursor) cursor.remove();
+            const cursor = output.querySelector('.terminal-cursor');
+            if (cursor) cursor.remove();
 
             let outHTML = "<br><br>";
             outputLines.forEach(line => {
                 outHTML += `> ${line}<br>`;
             });
-            
-            // Add new prompt line with cursor
+
             outHTML += `<br><span class="cmd-prompt">heri@portfolio</span>:<span class="cmd-path">~</span>$ <span class="terminal-cursor"></span>`;
-            
-            typeWriterOutput.innerHTML += outHTML;
+            output.innerHTML += outHTML;
         }
 
-        // Start typing after a short delay
-        setTimeout(typeCommand, 1000);
-    }
+        setTimeout(typeCommand, 800);
+    });
 
-    // 7. Cursor Parallax Interaction — Hero only (Only for fine pointers like mice)
+    // -------------------------------------------------------------------------
+    // 9. CURSOR PARALLAX INTERACTION (Hero)
+    // -------------------------------------------------------------------------
     if (window.matchMedia("(pointer: fine)").matches) {
-        const heroSection = document.getElementById('home');
-        // Only select parallax elements inside the hero section
-        const parallaxElements = heroSection
-            ? heroSection.querySelectorAll('.parallax-element')
-            : [];
-        
         document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
-            
-            parallaxElements.forEach(el => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 45;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+
+            document.querySelectorAll('.parallax-element').forEach(el => {
                 el.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
             });
         });
-        
-        // Reset when mouse leaves
+
         document.addEventListener('mouseleave', () => {
-            parallaxElements.forEach(el => {
+            document.querySelectorAll('.parallax-element').forEach(el => {
                 el.style.transform = `translate(0px, 0px)`;
             });
         });
     }
 
-    // 8. Easter Egg (Ctrl + Shift + ?)
+    // -------------------------------------------------------------------------
+    // 10. EASTER EGG (Ctrl + Shift + ?)
+    // -------------------------------------------------------------------------
     const easterEggOverlay = document.getElementById('easter-egg-overlay');
     const closeEasterEgg = document.getElementById('close-easter-egg');
     const easterEggContent = document.getElementById('easter-egg-content');
     let easterEggTriggered = false;
 
     document.addEventListener('keydown', (e) => {
-        // Checking for Ctrl + Shift + ?
         if (e.ctrlKey && e.shiftKey && e.key === '?') {
             e.preventDefault();
-            
             if (!easterEggOverlay.classList.contains('active')) {
                 easterEggOverlay.classList.add('active');
-                
                 if (!easterEggTriggered) {
                     easterEggTriggered = true;
-                    runEasterEggAnimation();
+                    runEasterEgg();
                 }
             } else {
                 easterEggOverlay.classList.remove('active');
@@ -202,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function runEasterEggAnimation() {
+    function runEasterEgg() {
         easterEggContent.innerHTML = `<span class="cmd-prompt">root@system</span>:<span class="cmd-path">/secret</span># <span id="secret-cmd"></span><span class="terminal-cursor" id="secret-cursor"></span>`;
         const secretCmd = document.getElementById('secret-cmd');
         const command = "whoami";
@@ -212,16 +357,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (j < command.length) {
                 secretCmd.innerHTML += command.charAt(j);
                 j++;
-                setTimeout(typeSecret, 150);
+                setTimeout(typeSecret, 130);
             } else {
-                setTimeout(showSecretOutput, 600);
+                setTimeout(showSecretOutput, 500);
             }
         }
 
         function showSecretOutput() {
             const scursor = document.getElementById('secret-cursor');
-            if(scursor) scursor.remove();
-
+            if (scursor) scursor.remove();
             easterEggContent.innerHTML += `
                 <br><br>
                 Heri Purnama<br>
@@ -232,6 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        setTimeout(typeSecret, 800);
+        setTimeout(typeSecret, 600);
     }
 });

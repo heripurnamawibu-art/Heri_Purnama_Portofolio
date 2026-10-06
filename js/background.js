@@ -296,16 +296,26 @@
             });
         }
 
-        // Scroll Tracking
+        // Scroll Tracking (Horizontal Left-to-Right Flow on main-track)
+        const mainTrack = document.getElementById('main-track');
         function updateScroll() {
-            const maxScroll = Math.max(
-                document.documentElement.scrollHeight - window.innerHeight,
-                1
-            );
-            scroll.target = window.pageYOffset || document.documentElement.scrollTop || 0;
+            let scrollX = 0;
+            let maxScroll = 1;
+            if (mainTrack) {
+                scrollX = mainTrack.scrollLeft;
+                maxScroll = Math.max(mainTrack.scrollWidth - mainTrack.clientWidth, 1);
+            } else {
+                scrollX = window.pageXOffset || document.documentElement.scrollLeft || window.scrollX || 0;
+                maxScroll = Math.max(document.documentElement.scrollWidth - window.innerWidth, 1);
+            }
+            scroll.target = scrollX;
             scroll.progress = Math.min(Math.max(scroll.target / maxScroll, 0), 1);
         }
+        if (mainTrack) {
+            mainTrack.addEventListener('scroll', updateScroll, { passive: true });
+        }
         window.addEventListener('scroll', updateScroll, { passive: true });
+        window.addEventListener('resize', updateScroll, { passive: true });
         updateScroll();
 
         // Visibility Change (Pause rendering when tab inactive)
@@ -343,41 +353,47 @@
         lastTime = now;
         const time = now * 0.001;
 
-        // Smooth Interpolation for Mouse and Scroll
+        // Smooth Interpolation for Mouse and Scroll (with instant snap on loop reset)
         const lerpFactor = 0.05;
         mouse.x += (mouse.targetX - mouse.x) * lerpFactor;
         mouse.y += (mouse.targetY - mouse.y) * lerpFactor;
-        scroll.current += (scroll.target - scroll.current) * lerpFactor;
+        if (Math.abs(scroll.target - scroll.current) > 1000) {
+            scroll.current = scroll.target;
+        } else {
+            scroll.current += (scroll.target - scroll.current) * lerpFactor;
+        }
 
-        // 1. Camera & Scene Dynamics
+        // 1. Camera & Scene Dynamics (Horizontal Pan & Glide)
         if (!prefersReducedMotion) {
-            // Subtle camera parallax based on mouse
-            const camTargetX = mouse.x * CONFIG.mouseSensitivity * 1.8;
-            const camTargetY = 1.0 + (mouse.y * CONFIG.mouseSensitivity * 0.9) - (scroll.progress * 2.5);
-            const camTargetZ = 14.0 - (scroll.progress * CONFIG.scrollSensitivity * 0.4);
+            // Camera glides along the X-axis from left to right as you scroll
+            const camTargetX = (mouse.x * CONFIG.mouseSensitivity * 1.8) + ((scroll.progress - 0.5) * 22.0);
+            const camTargetY = 1.0 + (mouse.y * CONFIG.mouseSensitivity * 0.9);
+            const camTargetZ = 14.0 - Math.sin(scroll.progress * Math.PI) * 4.0;
 
             camera.position.x += (camTargetX - camera.position.x) * 0.05;
             camera.position.y += (camTargetY - camera.position.y) * 0.05;
             camera.position.z += (camTargetZ - camera.position.z) * 0.05;
 
             camera.lookAt(
-                mouse.x * 0.5,
-                (scroll.progress * -2.0),
-                -10
+                (camTargetX * 0.6),
+                0,
+                -12
             );
 
-            // 2. Light Movement (Follows mouse subtly)
+            // 2. Light Movement (Follows user horizontally)
             if (pointLight) {
-                pointLight.position.x = mouse.x * 8;
+                pointLight.position.x = (mouse.x * 8) + ((scroll.progress - 0.5) * 20.0);
                 pointLight.position.y = 4 + mouse.y * 3;
             }
 
-            // 3. Grid Forward Motion & Perspective Flow
+            // 3. Grid Motion with subtle horizontal parallax
             if (gridHelper) {
                 const gridOffset = (time * 0.8 + scroll.current * 0.015) % (CONFIG.gridSize / CONFIG.gridDivisions);
                 gridHelper.position.z = gridOffset;
+                gridHelper.position.x = -((scroll.progress - 0.5) * 8.0);
                 if (gridFloor2) {
                     gridFloor2.position.z = -gridOffset;
+                    gridFloor2.position.x = ((scroll.progress - 0.5) * 8.0);
                 }
             }
 

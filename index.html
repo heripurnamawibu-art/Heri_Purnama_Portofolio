@@ -38,9 +38,11 @@
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
+                <li><a href="#learning">Learning</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#archive">Archive</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -48,9 +50,13 @@
                 <span class="bar"></span>
             </div>
         </nav>
+        <!-- Horizontal Scroll Progress Indicator -->
+        <div class="scroll-progress-container">
+            <div id="scroll-progress-bar"></div>
+        </div>
     </header>
 
-    <main>
+    <main id="main-track" class="horizontal-track">
         <!-- HERO SECTION -->
         <section id="home" class="hero reveal">
             <div class="hero-content">
@@ -427,24 +433,14 @@
                         SYS_EMAIL
                     </a>
                 </div>
+                <div class="contact-footer-note">
+                    <p>&copy; 2026 Heri Purnama. All rights reserved. &bull; Archive System v1.0</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 Heri Purnama. All rights reserved.</p>
-            <p class="small-text">Archive System v1.0. Built with HTML, CSS &amp; JavaScript.</p>
-        </div>
-        <button id="back-to-top" aria-label="Back to top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="18 15 12 9 6 15"></polyline>
-            </svg>
-        </button>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/three.min.js"></script>
     <script src="js/background.js"></script>
     <script src="script.js"></script>
 </body>
